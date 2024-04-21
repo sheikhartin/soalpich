@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% block title %}Register{% endblock %}
+
+{% block content %}
+{% if error %}
+<div class="container notification mt-5 is-danger is-size-5 has-text-centered">
+  {{ error }}
+</div>
+{% endif %}
+
+<div class="container fixed-grid mt-5 has-3-cols has-1-cols-mobile">
+  <div class="grid">
+    <div class="cell mx-5">
+      <h1 class="title">Sign In</h1>
+      <form action="{% url 'login' %}" method="post">
+        {% csrf_token %}
+        <div class="field">
+          <label class="label">Username</label>
+          <div class="control">
+            <input
+              name="username"
+              class="input"
+              type="text"
+              placeholder="e.g. jDoe"
+              required
+            />
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Password</label>
+          <div class="control">
+            <input
+              name="password"
+              class="input"
+              type="password"
+              placeholder="e.g. h3l1oW0rLq"
+              required
+            />
+          </div>
+        </div>
+        <div class="field has-text-right">
+          <p class="control">
+            <button class="button" type="submit">Go</button>
+          </p>
+        </div>
+      </form>
+    </div>
+    <div class="cell m-auto my-3 has-text-centered">
+      <h1 class="title">Make Your Choice!</h1>
+      <h2 class="subtitle">Do you want to log in or register?</h2>
+    </div>
+    <div class="cell mx-5">
+      <h1 class="title">Sign Up</h1>
+      <form id="signup-form" action="{% url 'register' %}" method="post">
+        {% csrf_token %}
+        <div class="field">
+          <label class="label">Username</label>
+          <div class="control">
+            <input
+              name="username"
+              class="input"
+              type="text"
+              placeholder="e.g. jDoe"
+              required
+            />
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">E-mail</label>
+          <div class="control">
+            <input
+              name="email"
+              class="input"
+              type="email"
+              placeholder="e.g. someoneDoe@mail.com"
+              required
+            />
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Password</label>
+          <div class="control">
+            <input
+              name="password"
+              class="input"
+              type="password"
+              placeholder="e.g. h3l1oW0rLq"
+              required
+            />
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Confirm your password</label>
+          <div class="control">
+            <input
+              id="password-confirm"
+              class="input"
+              type="password"
+              placeholder="e.g. h3l1oW0rLq"
+              required
+            />
+          </div>
+        </div>
+        <div class="field has-text-right">
+          <p class="control">
+            <button class="button" type="submit">Go</button>
+          </p>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+  $(document).ready(function () {
+    $("#signup-form").submit(function (e) {
+      var password = $(this).find("input[name='password']").val();
+      var passwordConfirm = $("#password-confirm").val();
+
+      if (password !== passwordConfirm) {
+        alert("Passwords are not the same!");
+        event.preventDefault();
+      }
+    });
+  });
+</script>
+{% endblock %}
