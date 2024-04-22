@@ -115,7 +115,7 @@
 {% block script %}
 <script>
   $(document).ready(function () {
-    $("#signup-form").submit(function (e) {
+    $("#signup-form").submit(function (event) {
       var password = $(this).find("input[name='password']").val();
       var passwordConfirm = $("#password-confirm").val();
 
