@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}Games Room{% endblock %}
+
+{% block content %}
+<div class="container mt-5 mx-auto">
+  <form class="mr-5 has-text-right" method="post">
+    {% csrf_token %}
+    <button class="button" type="submit">Create game room</button>
+  </form>
+  <div
+    class="fixed-grid mt-3 has-5-cols-desktop has-3-cols-tablet has-2-cols-mobile"
+  >
+    <div class="grid mx-5">
+      {% for game in games %}
+      <a
+        class="cell box has-text-centered"
+        href="{% url 'play' slug=game.slug %}"
+      >
+        <h1 class="title">{{ game.slug }}</h1>
+        <p>
+          <span class="icon-text mr-2">
+            <span class="icon">
+              <i class="fas fa-users"></i>
+            </span>
+            <span>{{ game.players.count }}</span>
+          </span>
+          <span class="icon-text mr-2">
+            <span class="icon">
+              <i class="fas fa-question"></i>
+            </span>
+            <span>{{ game.questions.count }}</span>
+          </span>
+        </p>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}
