@@ -17,7 +17,7 @@
   <div class="grid">
     <div class="cell mx-auto mx-5 is-col-start-2-desktop">
       <h1 class="title has-text-centered">Scores: {{ user.scores }}</h1>
-      {% if user.profile_picture is not None %}
+      {% if user.profile_picture %}
       <figure class="image mx-auto mb-3 is-1by1">
         <img class="is-rounded" src="{{ user.profile_picture.url }}" />
       </figure>
