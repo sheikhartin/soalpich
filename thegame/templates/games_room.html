@@ -35,5 +35,29 @@
       {% endfor %}
     </div>
   </div>
+
+  <nav
+    class="pagination mr-5 is-justify-content-flex-end"
+    role="navigation"
+    aria-label="pagination"
+  >
+    {% if games.has_previous %}
+    <a
+      class="pagination-previous"
+      href="?page={{ games.previous_page_number }}"
+      >Previous</a
+    >
+    {% else %}
+    <a class="pagination-previous" disabled>Previous</a>
+    {% endif %} {% if games.has_next %}
+    <a
+      class="pagination-next"
+      href="?page={{ games.next_page_number }}"
+      >Next page</a
+    >
+    {% else %}
+    <a class="pagination-next" disabled>Next page</a>
+    {% endif %}
+  </nav>
 </div>
 {% endblock %}
