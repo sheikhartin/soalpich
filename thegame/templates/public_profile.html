@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}{{ profile_user.username}}'s Public Profile{% endblock %}
+
+{% block content %}
+<div class="container mt-5 is-max-widescreen has-text-centered">
+  {% if profile_user.profile_picture is not None %}
+  <figure class="image mx-auto mb-3 is-128x128 is-1by1">
+    <img class="is-rounded" src="{{ profile_user.profile_picture.url }}" />
+  </figure>
+  {% endif %}
+  <h1 class="title mb-1">{{ profile_user.scores }}</h1>
+  <h2 class="subtitle has-text-centered">
+    Scores until {% now "B d, Y" %} at {% now "H:i" %}
+  </h2>
+  {% if profile_user.instagram_username %}
+  <a href="https://instagram.com/{{ profile_user.instagram_username }}"
+    >Instagram</a
+  ><br />
+  {% endif %}
+  {% if profile_user.instagram_username %}
+  <a href="https://facebook.com/{{ profile_user.facebook_username }}"
+    >Facebook</a
+  ><br />
+  {% endif %}
+  {% if profile_user.twitter_username %}
+  <a href="https://twitter.com/{{ profile_user.twitter_username }}"
+    >X (formerly Twitter)</a
+  ><br />
+  {% endif %} {% if profile_user.telegram_username %}
+  <a href="https://telegram.me/{{ profile_user.telegram_username }}">Telegram</a
+  ><br />
+  {% endif %}
+  {% if profile_user.is_email_public %}
+  <a href="mailto:{{ profile_user.email }}">E-mail</a>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+{% if error %}
+<div class="container notification mt-5 is-danger is-size-5 has-text-centered">
+  {{ error }}
+</div>
+{% endif %}
+
+<form
+  class="container fixed-grid mt-5 has-4-cols-desktop has-1-cols-mobile has-2-cols-tablet"
+  method="post"
+  enctype="multipart/form-data"
+>
+  {% csrf_token %}
+  <div class="grid">
+    <div class="cell mx-auto mx-5 is-col-start-2-desktop">
+      <h1 class="title has-text-centered">Scores: {{ user.scores }}</h1>
+      {% if user.profile_picture %}
+      <figure class="image mx-auto mb-3 is-1by1">
+        <img class="is-rounded" src="{{ user.profile_picture.url }}" />
+      </figure>
+      {% endif %}
+      <div class="file">
+        <label class="file-label">
+          <input name="profile_picture" class="file-input" type="file" />
+          <span class="file-cta">
+            <span class="file-icon">
+              <i class="fas fa-upload"></i>
+            </span>
+            <span class="file-label">Upload an avatar...</span>
+          </span>
+        </label>
+      </div>
+    </div>
+    <div class="cell mx-auto mx-5">
+      <div class="field">
+        <label class="label">Username</label>
+        <div class="control">
+          <input
+            name="username"
+            class="input"
+            type="text"
+            value="{{ user.username }}"
+          />
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">E-mail</label>
+        <div class="control">
+          <input
+            name="email"
+            class="input"
+            type="email"
+            value="{{ user.email }}"
+          />
+        </div>
+      </div>
+      <div class="field">
+        <label class="checkbox">
+          <input
+            name="is_email_public"
+            type="checkbox"
+            {% if user.is_email_public %}checked{% endif %}
+          />
+          Make my e-mail public
+        </label>
+      </div>
+      <div class="field">
+        <label class="label">Instagram username</label>
+        <div class="field-body">
+          <div class="field">
+            <div class="field has-addons">
+              <p class="control">
+                <a class="button is-static">@</a>
+              </p>
+              <p class="control is-expanded">
+                <input
+                  name="instagram_username"
+                  class="input"
+                  type="text"
+                  placeholder="e.g. jDoeAtInstagram"
+                  {% if user.instagram_username is not None %}value="{{ user.instagram_username }}"{% endif %}
+                />
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Facebook username</label>
+        <div class="field-body">
+          <div class="field">
+            <div class="field has-addons">
+              <p class="control">
+                <a class="button is-static">@</a>
+              </p>
+              <p class="control is-expanded">
+                <input
+                  name="facebook_username"
+                  class="input"
+                  type="text"
+                  placeholder="e.g. jDoeAtFacebook"
+                  {% if user.facebook_username is not None %}value="{{ user.facebook_username }}"{% endif %}
+                />
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">X (formerly Twitter) username</label>
+        <div class="field-body">
+          <div class="field">
+            <div class="field has-addons">
+              <p class="control">
+                <a class="button is-static">@</a>
+              </p>
+              <p class="control is-expanded">
+                <input
+                  name="twitter_username"
+                  class="input"
+                  type="text"
+                  placeholder="e.g. jDoeAtX"
+                  {% if user.twitter_username is not None %}value="{{ user.twitter_username }}"{% endif %}
+                />
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Telegram username</label>
+        <div class="field-body">
+          <div class="field">
+            <div class="field has-addons">
+              <p class="control">
+                <a class="button is-static">@</a>
+              </p>
+              <p class="control is-expanded">
+                <input
+                  name="telegram_username"
+                  class="input"
+                  type="text"
+                  placeholder="e.g. jDoeAtTelegram"
+                  {% if user.telegram_username is not None %}value="{{ user.telegram_username }}"{% endif %}
+                />
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">New password</label>
+        <div class="control">
+          <input
+            name="new_password"
+            class="input"
+            type="password"
+            placeholder="e.g. NEMh3l1oW0rLq"
+          />
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Confirm your new password</label>
+        <div class="control">
+          <input
+            id="new-password-confirm"
+            class="input"
+            type="password"
+            placeholder="e.g. NEMh3l1oW0rLq"
+          />
+        </div>
+      </div>
+      <div class="field has-text-right">
+        <p class="control">
+          <button class="button" type="submit">Submit</button>
+        </p>
+      </div>
+    </div>
+  </div>
+</form>
+{% endblock %}
+
+{% block script %}
+<script>
+  $(document).ready(function () {
+    $("form").submit(function (event) {
+      var newPassword = $(this).find("input[name='new_password']").val();
+      var newPasswordConfirm = $("#new-password-confirm").val();
+
+      if (newPassword && newPassword !== newPasswordConfirm) {
+        alert("Passwords are not the same!");
+        event.preventDefault();
+      }
+
+      var invalidChars = /[\!"#\$%&\'\(\)\*\+\,\./:;<=>\?@\[\\\]^`\{\|\}~]/;
+      [
+        "instagram_username",
+        "facebook_username",
+        "twitter_username",
+        "telegram_username",
+      ].forEach(function (field) {
+        var value = $(`input[name='${field}']`).val();
+        if (invalidChars.test(value)) {
+          alert(
+            "Social media usernames cannot contain invalid characters such as `!`, `?`, `+`, etc."
+          );
+          event.preventDefault();
+          return false;
+        }
+      });
+    });
+  });
+</script>
+{% endblock %}

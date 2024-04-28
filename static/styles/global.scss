@@ -1,0 +1,130 @@
+@charset "utf-8";
+
+$light-orange: #ffcc80;
+$orange: #fb8c00;
+$dark-orange: #f4511e;
+$green: #43a047;
+$dark-green: #1b5e20;
+$red: #f44336;
+$dark-red: #c62828;
+
+@use "../resources/bulma/sass" with (
+  $family-primary: "Jua",
+  $family-secondary: "Protest Riot",
+  $primary: $orange,
+  $link: $dark-orange,
+  $navbar-item-img-max-height: 2.5rem,
+  $footer-padding: 2rem 3.5rem,
+  $footer-background-color: $light-orange
+);
+
+@use "../resources/bulma/sass/utilities/mixins";
+
+@font-face {
+  font-family: "Jua";
+  src: url("../fonts/Jua-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Protest Riot";
+  src: url("../fonts/ProtestRiot-Regular.ttf");
+}
+
+@import "../resources/fontawesome/css/all.min.css";
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+body > :not(.navbar, .footer) {
+  flex: 1;
+}
+
+.navbar,
+.navbar-menu {
+  background-color: $orange;
+
+  @include mixins.touch {
+    box-shadow: none;
+  }
+}
+
+a.navbar-item {
+  border-radius: 1rem;
+  transition:
+    margin-right 2s,
+    margin-bottom 1s,
+    background-color 0.5s,
+    color 0.5s;
+}
+
+a.navbar-item:hover,
+a.navbar-item:focus {
+  background-color: $dark-orange;
+}
+
+a.icon-text:not(.footer a.icon-text, .navbar a.icon-text) {
+  color: $dark-orange;
+}
+
+span.file-cta,
+a.button,
+button.button,
+a.pagination-previous,
+a.pagination-next {
+  background-color: $orange;
+  color: #000;
+}
+
+span.file-cta:hover,
+span.file-cta:focus,
+a.button:hover,
+a.button:focus,
+button.button:hover,
+button.button:focus,
+a.pagination-previous:hover,
+a.pagination-previous:focus,
+a.pagination-next:hover,
+a.pagination-next:focus {
+  background-color: $dark-orange;
+  color: #000;
+}
+
+.cell.box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.hover-shadow-effect .cell {
+  @include mixins.touch {
+    background-image: linear-gradient(120deg, $orange, $dark-orange);
+  }
+}
+
+.hover-shadow-effect .cell:hover,
+.hover-shadow-effect .cell:focus {
+  background-image: linear-gradient(120deg, $orange, $dark-orange);
+  box-shadow: 1em 2em 4em $light-orange;
+}
+
+.green-background-effect {
+  background-color: $green;
+}
+
+.hover-shadow-effect .cell:hover .green-background-effect,
+.hover-shadow-effect .cell:focus .green-background-effect {
+  background-image: linear-gradient(120deg, $green, $dark-green);
+}
+
+.red-background-effect {
+  background-color: $red;
+}
+
+.hover-shadow-effect .cell:hover .red-background-effect,
+.hover-shadow-effect .cell:focus .red-background-effect {
+  background-image: linear-gradient(120deg, $red, $dark-red);
+}

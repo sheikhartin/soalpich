@@ -1,0 +1,123 @@
+<!doctype html>
+{% load static %}
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}{% endblock %} | Soalpich</title>
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="{% static 'images/favicon.ico' %}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'styles/main.css' %}"
+    />
+    <!--<link-->
+    <!--rel="stylesheet"-->
+    <!--type="text/css"-->
+    <!--href="{% static 'styles/debug.css' %}"-->
+    <!--/>-->
+  </head>
+
+  <body>
+    <nav
+      class="navbar p-4 is-primary is-unselectable has-shadow"
+      role="navigation"
+      aria-label="main navigation"
+    >
+      <div class="navbar-brand">
+        <a class="navbar-item mr-2" href="{% url 'index' %}">
+          <img src="{% static 'images/logo.png' %}" />
+        </a>
+        <a
+          role="button"
+          class="navbar-burger"
+          aria-label="menu"
+          aria-expanded="false"
+          data-target="masterNavbar"
+        >
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <div
+        id="masterNavbar"
+        class="navbar-menu is-size-5 has-text-weight-semibold"
+      >
+        <div class="navbar-start">
+          <a class="navbar-item icon-text mr-2" href="#navbar-start-chat-room">
+            <span>Chat Room</span>
+            <span class="icon">
+              <i class="fas fa-comments"></i>
+            </span>
+          </a>
+          <a class="navbar-item icon-text" href="{% url 'games_room' %}">
+            <span>Play</span>
+            <span class="icon">
+              <i class="fas fa-play"></i>
+            </span>
+          </a>
+        </div>
+        <div class="navbar-end">
+          {% if user.is_authenticated %}
+          <a class="navbar-item icon-text mr-2" href="{% url 'logout' %}">
+            <span>Logout</span>
+            <span class="icon">
+              <i class="fas fa-sign-out-alt"></i>
+            </span>
+          </a>
+          {% endif %}
+          <a class="navbar-item icon-text mr-1" href="{% url 'profile' %}">
+            <span>Profile</span>
+            <span class="icon">
+              <i class="fas fa-user"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    {% block content %}{% endblock %}
+
+    <footer class="footer mt-3">
+      <div class="columns">
+        <div class="column">
+          <h2 class="subtitle has-text-weight-semibold">Connect With Us</h2>
+          <ul>
+            <li class="mb-2">
+              <a href="#footer-connect-with-us-email">E-mail</a>
+            </li>
+            <li class="mb-2">
+              <a href="https://github.com/sheikhartin/soalpich">GitHub</a>
+            </li>
+          </ul>
+        </div>
+        <div class="column">
+          <h2 class="subtitle has-text-weight-semibold">Platform</h2>
+          <ul>
+            <li class="mb-2">
+              <a href="#footer-platform-developers">Developers</a>
+            </li>
+            <li class="mb-2">
+              <a href="#footer-platform-about">About</a>
+            </li>
+          </ul>
+        </div>
+        <div class="column content has-text-centered">
+          <p>All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="{% static 'resources/jquery-3.7.1.min.js' %}"></script>
+    <script src="{% static 'scripts/bulma-helpers.js' %}"></script>
+    {% block script %}{% endblock %}
+  </body>
+</html>

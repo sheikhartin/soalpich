@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% block title %}Play {{ room.slug }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5 mb-2 has-text-centered">
+  <h1 class="title">{{ room.slug }}</h1>
+  <h2 class="subtitle">
+    By
+    <a
+      class="icon-text"
+      href="{% url 'public_profile' username=room.creator %}"
+    >
+      <figure class="image mt-1 is-16x16 is-1by1">
+        <img class="is-rounded" src="{{ room.creator.profile_picture.url }}" />
+      </figure>
+      <span>{{ room.creator }}</span>
+    </a>
+    at {{ room.created_at }}
+    <p class="mt-2">
+      <span class="icon-text mr-2">
+        <span class="icon">
+          <i class="fas fa-users"></i>
+        </span>
+        <span>{{ room.players.count }}</span>
+      </span>
+      <span class="icon-text mr-2">
+        <span class="icon">
+          <i class="fas fa-question"></i>
+        </span>
+        <span>{{ room.questions.count }}</span>
+      </span>
+    </p>
+  </h2>
+</div>
+
+<div class="container mt-3">
+  {% if not played %}
+  <h2
+    id="timer"
+    data-time="{% widthratio questions.count 1 30 %}"
+    class="subtitle is-family-secondary is-uppercase has-text-centered has-text-weight-semibold"
+  >
+    LET'S GO!
+  </h2>
+  <form id="quiz-form" method="post">
+    {% csrf_token %}
+    <div class="fixed-grid hover-shadow-effect">
+      <div class="grid">
+        {% for question in questions %}
+        <div class="cell box question-container">
+          <h2 class="subtitle is-size-4">{{ question.text }}</h2>
+          {% for option, is_correct in question.options.items %}
+          <div class="control">
+            <label class="radio is-size-5">
+              <input
+                type="radio"
+                name="{{ question.id }}"
+                value="{{ option }}"
+                required
+              />
+              {{ option }}
+            </label>
+          </div>
+          {% endfor %}
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <p class="has-text-right">
+      <button class="button" type="submit">Submit</button>
+    </p>
+  </form>
+  {% else %}
+  <div class="fixed-grid hover-shadow-effect">
+    <div class="grid">
+      {% for user_answer in user_answers.all %}
+      <div class="cell box">
+        <h2 class="subtitle is-size-4">{{ user_answer.question.text }}</h2>
+        {% for option, is_correct in user_answer.question.options.items %}
+        <div class="control">
+          <label class="radio is-size-5">
+            <input
+              type="radio"
+              value="{{ option }}"
+              {% if is_correct %}checked{% endif %}
+              disabled
+            />
+            {{ option }}
+          </label>
+        </div>
+        {% endfor %} {% if user_answer.is_correct %}
+        <p class="box mt-2 has-text-white green-background-effect">Good job!</p>
+        {% else %}
+        <p class="box mt-2 has-text-white red-background-effect">
+          Wrong answer!
+        </p>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% if not played %}
+{% block script %}
+<script>
+  $(document).ready(function () {
+    function randomCheckUnanswered() {
+      $(".question-container").each(function () {
+        var question = $(this);
+        if (question.find('input[type="radio"]:checked').length == 0) {
+          var radios = question.find('input[type="radio"]');
+          radios
+            .eq(Math.floor(Math.random() * radios.length))
+            .prop("checked", true);
+        }
+      });
+    }
+
+    $("#timer").each(function () {
+      var timer = $(this);
+      var timeLeft = parseInt(timer.data("time"));
+      var countdown = setInterval(function () {
+        if (timeLeft <= 0) {
+          clearInterval(countdown);
+          timer.text("CHOOSING A RANDOM ANSWER FOR THE ABANDONED QUESTIONS...");
+          window.setTimeout(function () {
+            randomCheckUnanswered();
+            $("#quiz-form").submit();
+          }, 1500);
+        } else {
+          timeLeft--;
+          timer.text(`${timeLeft} SECONDS REMAINING`);
+        }
+      }, 1000);
+    });
+  });
+</script>
+{% endblock %}
+{% endif %}
