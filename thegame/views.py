@@ -139,9 +139,9 @@ class GamesRoomView(View):
             request,
             "games_room.html",
             {
-                "games": Paginator(models.QuizRoom.objects.all(), 15).get_page(
-                    request.GET.get("page")
-                )
+                "games": Paginator(
+                    models.QuizRoom.objects.all().order_by("-created_at"), 15
+                ).get_page(request.GET.get("page"))
             },
         )
 
