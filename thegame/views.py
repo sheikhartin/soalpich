@@ -17,8 +17,6 @@ class IndexView(TemplateView):
 
 
 class ProfileView(LoginRequiredMixin, View):
-    login_url = "/register/"
-
     def get(self, request: HttpRequest) -> HttpResponse:
         return render(request, "profile.html", {"user": request.user})
 
@@ -159,8 +157,6 @@ class GamesRoomView(View):
 
 
 class PlayView(LoginRequiredMixin, View):
-    login_url = "/register/"
-
     def get(self, request: HttpRequest, **kwargs: str) -> HttpResponse:
         if (
             (room := get_object_or_404(models.QuizRoom, slug=kwargs.get("slug")))
