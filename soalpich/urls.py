@@ -24,6 +24,7 @@ from django.views.static import serve
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("thegame.urls")),
+    path("", include("letstalk.urls")),
 ]
 
 if settings.DEBUG:
