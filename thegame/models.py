@@ -17,9 +17,7 @@ def _generate_unique_slug() -> int:
 class CustomUser(AbstractUser):
     username = models.CharField(max_length=150, unique=True)
     profile_picture = models.ImageField(
-        upload_to=_upload_to,
-        blank=True,
-        null=True,
+        upload_to=_upload_to, blank=True, null=True, default="images/logo.png"
     )
     scores = models.IntegerField(default=0)
     is_email_public = models.BooleanField(default=False)
