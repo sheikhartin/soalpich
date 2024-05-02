@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "soalpich"
-version = "1.0.0"
+version = "1.0.1"
 description = "A website to ask you questions..."
 authors = ["Artin Mohammadi <sheikhartin@gmail.com>"]
 license = "MIT"
