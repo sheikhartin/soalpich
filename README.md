@@ -43,6 +43,12 @@ Run it:
 poetry run python manage.py runserver --insecure
 ```
 
+Don't forget to run a Redis server on the port specified in the environment variables:
+
+```bash
+redis-server --port 6347
+```
+
 Check project status for deployment:
 
 ```bash
