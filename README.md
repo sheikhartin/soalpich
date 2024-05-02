@@ -8,6 +8,47 @@
 
 A platform for quizzes and also chatting...
 
+### How to Use
+
+First, install the dependencies:
+
+```bash
+poetry install
+```
+
+Configure the database and adapt the environment variables to it... Look at the example [here](soalpich/.env.example).
+
+Apply migrations:
+
+```bash
+poetry run python manage.py makemigrations \
+&& poetry run python manage.py migrate
+```
+
+Load a simple database:
+
+```bash
+poetry run python manage.py loaddata db.json
+```
+
+Test it before running:
+
+```bash
+poetry run python manage.py test
+```
+
+Run it:
+
+```bash
+poetry run python manage.py runserver --insecure
+```
+
+Check project status for deployment:
+
+```bash
+poetry run python manage.py check --deploy
+```
+
 ### License
 
 This project is licensed under the MIT license found in the [LICENSE](LICENSE) file in the root directory of this repository.
