@@ -196,10 +196,7 @@ class PlayView(LoginRequiredMixin, View):
         for question in room.questions.all():
             scores += (
                 1
-                if (
-                    is_correct := question.options[request.POST.get(str(question.id))]
-                    == True
-                )
+                if (is_correct := question.options[request.POST.get(str(question.id))])
                 else -1
             )
             models.UserAnswer.objects.create(
