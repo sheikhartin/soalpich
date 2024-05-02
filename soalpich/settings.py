@@ -32,6 +32,7 @@ ALLOWED_HOSTS = env("ALLOWED_HOSTS").split()
 
 # Application definition
 INSTALLED_APPS = [
+    "daphne",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -39,7 +40,9 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "whitenoise.runserver_nostatic",
+    "channels",
     "thegame",
+    "letstalk",
 ]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -68,7 +71,9 @@ TEMPLATES = [
     },
 ]
 WSGI_APPLICATION = "soalpich.wsgi.application"
+ASGI_APPLICATION = "soalpich.asgi.application"
 AUTH_USER_MODEL = "thegame.CustomUser"
+LOGIN_URL = "/register/"
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
@@ -81,6 +86,19 @@ DATABASES = {
         "HOST": env("DB_HOST"),
         "PORT": env("DB_PORT"),
     }
+}
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": list(
+                map(
+                    lambda x: (x[0], int(x[1])),
+                    map(lambda x: x.split(":"), env("REDIS_HOSTS").split()),
+                )
+            )
+        },
+    },
 }
 
 # Password validation

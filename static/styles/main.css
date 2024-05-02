@@ -22508,13 +22508,13 @@ a.pagination-next:focus {
 }
 
 @media screen and (max-width: 1023px) {
-  .hover-shadow-effect .cell {
+  .hover-shadow-effect .box {
     background-image: linear-gradient(120deg, #fb8c00, #f4511e);
   }
 }
 
-.hover-shadow-effect .cell:hover,
-.hover-shadow-effect .cell:focus {
+.hover-shadow-effect .box:hover,
+.hover-shadow-effect .box:focus {
   background-image: linear-gradient(120deg, #fb8c00, #f4511e);
   box-shadow: 1em 2em 4em #ffcc80;
 }
@@ -22523,8 +22523,8 @@ a.pagination-next:focus {
   background-color: #43a047;
 }
 
-.hover-shadow-effect .cell:hover .green-background-effect,
-.hover-shadow-effect .cell:focus .green-background-effect {
+.hover-shadow-effect .box:hover .green-background-effect,
+.hover-shadow-effect .box:focus .green-background-effect {
   background-image: linear-gradient(120deg, #43a047, #1b5e20);
 }
 
@@ -22532,8 +22532,8 @@ a.pagination-next:focus {
   background-color: #f44336;
 }
 
-.hover-shadow-effect .cell:hover .red-background-effect,
-.hover-shadow-effect .cell:focus .red-background-effect {
+.hover-shadow-effect .box:hover .red-background-effect,
+.hover-shadow-effect .box:focus .red-background-effect {
   background-image: linear-gradient(120deg, #f44336, #c62828);
 }
 

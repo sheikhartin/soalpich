@@ -17,8 +17,6 @@ class IndexView(TemplateView):
 
 
 class ProfileView(LoginRequiredMixin, View):
-    login_url = "/register/"
-
     def get(self, request: HttpRequest) -> HttpResponse:
         return render(request, "profile.html", {"user": request.user})
 
@@ -139,9 +137,9 @@ class GamesRoomView(View):
             request,
             "games_room.html",
             {
-                "games": Paginator(models.QuizRoom.objects.all(), 15).get_page(
-                    request.GET.get("page")
-                )
+                "games": Paginator(
+                    models.QuizRoom.objects.all().order_by("-created_at"), 15
+                ).get_page(request.GET.get("page"))
             },
         )
 
@@ -159,8 +157,6 @@ class GamesRoomView(View):
 
 
 class PlayView(LoginRequiredMixin, View):
-    login_url = "/register/"
-
     def get(self, request: HttpRequest, **kwargs: str) -> HttpResponse:
         if (
             (room := get_object_or_404(models.QuizRoom, slug=kwargs.get("slug")))
@@ -200,10 +196,7 @@ class PlayView(LoginRequiredMixin, View):
         for question in room.questions.all():
             scores += (
                 1
-                if (
-                    is_correct := question.options[request.POST.get(str(question.id))]
-                    == True
-                )
+                if (is_correct := question.options[request.POST.get(str(question.id))])
                 else -1
             )
             models.UserAnswer.objects.create(

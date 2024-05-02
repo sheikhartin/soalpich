@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "soalpich"
-version = "0.1.0"
+version = "1.0.0"
 description = "A website to ask you questions..."
 authors = ["Artin Mohammadi <sheikhartin@gmail.com>"]
 license = "MIT"
@@ -22,6 +22,8 @@ psycopg2-binary = "^2.9.9"
 django-environ = "^0.11.2"
 whitenoise = "^6.6.0"
 pillow = "^10.3.0"
+channels = {extras = ["daphne"], version = "^4.1.0"}
+channels-redis = "^4.2.0"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.3.3"

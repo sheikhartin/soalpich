@@ -99,14 +99,14 @@ a.pagination-next:focus {
   height: 100%;
 }
 
-.hover-shadow-effect .cell {
+.hover-shadow-effect .box {
   @include mixins.touch {
     background-image: linear-gradient(120deg, $orange, $dark-orange);
   }
 }
 
-.hover-shadow-effect .cell:hover,
-.hover-shadow-effect .cell:focus {
+.hover-shadow-effect .box:hover,
+.hover-shadow-effect .box:focus {
   background-image: linear-gradient(120deg, $orange, $dark-orange);
   box-shadow: 1em 2em 4em $light-orange;
 }
@@ -115,8 +115,8 @@ a.pagination-next:focus {
   background-color: $green;
 }
 
-.hover-shadow-effect .cell:hover .green-background-effect,
-.hover-shadow-effect .cell:focus .green-background-effect {
+.hover-shadow-effect .box:hover .green-background-effect,
+.hover-shadow-effect .box:focus .green-background-effect {
   background-image: linear-gradient(120deg, $green, $dark-green);
 }
 
@@ -124,7 +124,7 @@ a.pagination-next:focus {
   background-color: $red;
 }
 
-.hover-shadow-effect .cell:hover .red-background-effect,
-.hover-shadow-effect .cell:focus .red-background-effect {
+.hover-shadow-effect .box:hover .red-background-effect,
+.hover-shadow-effect .box:focus .red-background-effect {
   background-image: linear-gradient(120deg, $red, $dark-red);
 }

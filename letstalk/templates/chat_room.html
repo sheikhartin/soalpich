@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+{% block title %}Chat Room{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="columns is-centered">
+    <div class="column is-half">
+      <div
+        id="messages"
+        class="p-2 hover-shadow-effect"
+        style="height: 75vh; overflow-y: auto"
+      >
+        {% for message in messages %}
+        <article data-message-id="{{ message.id }}" class="media box">
+          <div class="media-content">
+            <div class="content">
+              <div class="mb-1">
+                <a
+                  class="icon-text"
+                  href="{% url 'public_profile' username=message.user.username %}"
+                >
+                  <figure class="image mt-1 is-16x16 is-1by1">
+                    <img
+                      class="is-rounded"
+                      src="{{ message.user.profile_picture.url }}"
+                    />
+                  </figure>
+                  <span>{{ message.user.username }}</span>
+                </a>
+                <small><i>{{ message.timestamp | date:'F d H:i' }}</i></small>
+              </div>
+              <p>{{ message.text }}</p>
+            </div>
+          </div>
+          <div class="media-right">
+            {% if message.user == request.user or request.user.is_superuser %}
+            <button class="button is-small delete-message">
+              <span class="icon is-small">
+                <i class="fas fa-trash"></i>
+              </span>
+            </button>
+            {% endif %}
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+
+      <div class="field mt-3 mx-2 has-addons">
+        <div class="control is-expanded">
+          <input
+            id="input-message"
+            class="input"
+            type="text"
+            placeholder="e.g. I got 120 points in just 2 hours!"
+          />
+        </div>
+        <div class="control">
+          <button id="submit-message" class="button is-info">
+            <span class="icon is-small">
+              <i class="fas fa-paper-plane"></i>
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+  $(document).ready(function () {
+    var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+    var chatSocket = new WebSocket(
+      `${ws_scheme}://${window.location.host}/ws/chat/`
+    );
+
+    chatSocket.onopen = function (e) {
+      console.log("Chat socket opened!");
+    };
+
+    chatSocket.onclose = function (e) {
+      console.error("Chat socket closed unexpectedly!");
+    };
+
+    function createMessageElement(message) {
+      var deleteButton = message.can_delete
+        ? `
+          <button class="button is-small delete-message">
+            <span class="icon is-small">
+              <i class="fas fa-trash"></i>
+            </span>
+          </button>`
+        : "";
+      return `
+        <article data-message-id="${message.id}" class="media box">
+          <div class="media-content">
+            <div class="content">
+              <div class="mb-1">
+                <a class="icon-text" href="/users/${message.author}">
+                  <figure class="image mt-1 is-16x16 is-1by1">
+                    <img class="is-rounded" src="${message.profile_picture_url}" />
+                  </figure>
+                  <span>${message.author}</span>
+                </a>
+                <small><i>${message.timestamp}</i></small>
+              </div>
+              <p>${message.text}</p>
+            </div>
+          </div>
+          <div class="media-right">${deleteButton}</div>
+        </article>`;
+    }
+
+    function scrollToBottom() {
+      var messagesContainer = $("#messages");
+      messagesContainer.scrollTop(messagesContainer.prop("scrollHeight"));
+    }
+
+    chatSocket.onmessage = function (e) {
+      var data = JSON.parse(e.data);
+      if (data.command === "new_message") {
+        $("#messages").append(createMessageElement(data.message));
+      } else if (data.command === "delete_message") {
+        $(`[data-message-id=${data.message_id}]`).remove();
+      }
+      scrollToBottom();
+    };
+
+    $("#input-message").focus();
+    scrollToBottom();
+
+    $("#submit-message").click(function () {
+      var messageInput = $("#input-message");
+      chatSocket.send(
+        JSON.stringify({
+          command: "send",
+          message: messageInput.val(),
+        })
+      );
+      messageInput.val("");
+    });
+
+    $("#input-message").on("keyup", function (e) {
+      if (e.keyCode === 13 && e.shiftKey) {
+        $("#submit-message").click();
+      }
+    });
+
+    $("#messages").on("click", ".delete-message", function () {
+      var messageId = $(this).closest("article").data("message-id");
+      chatSocket.send(
+        JSON.stringify({
+          command: "delete",
+          message_id: messageId,
+        })
+      );
+    });
+  });
+</script>
+{% endblock %}
