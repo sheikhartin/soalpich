@@ -40,7 +40,7 @@ poetry run python manage.py test
 Run it:
 
 ```bash
-poetry run python manage.py runserver --insecure
+poetry run python manage.py runserver
 ```
 
 Don't forget to run a Redis server on the port specified in the environment variables:
